@@ -1,7 +1,4 @@
-# Core ML libraries
-torch
-torchvision
-torchaudio
+# Core dependencies (excluding torch, torchvision, torchaudio since we install them via buildCommand)
 scikit-learn
 numpy
 pillow
@@ -9,7 +6,5 @@ pillow
 # FastAPI & server
 fastapi
 uvicorn[standard]
-gunicorn
 python-multipart
 python-dotenv
- 
