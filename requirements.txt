@@ -12,3 +12,4 @@ uvicorn[standard]
 gunicorn
 python-multipart
 python-dotenv
+ 
