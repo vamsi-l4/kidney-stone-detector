@@ -4,6 +4,5 @@ python-multipart
 pillow
 numpy
 scikit-learn
-torch
-torchvision
 python-dotenv
+gunicorn
