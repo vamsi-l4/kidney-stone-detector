@@ -5,5 +5,6 @@ services:
     plan: free
     buildCommand: |
       pip install --upgrade pip
-      pip install --no-cache-dir --index-url https://download.pytorch.org/whl/cpu -r requirements.txt
+      pip install --no-cache-dir --index-url https://download.pytorch.org/whl/cpu torch torchvision torchaudio
+      pip install --no-cache-dir -r requirements.txt
     startCommand: python -m uvicorn api:app --host 0.0.0.0 --port $PORT
