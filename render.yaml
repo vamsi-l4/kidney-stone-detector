@@ -2,9 +2,8 @@ services:
   - type: web
     name: kidney-stone-detector
     env: python
+    plan: free
     buildCommand: |
       pip install --upgrade pip
-      pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
-      pip install -r requirements.txt
-    startCommand: uvicorn api:app --host 0.0.0.0 --port $PORT
-    plan: free
+      pip install --no-cache-dir --index-url https://download.pytorch.org/whl/cpu -r requirements.txt
+    startCommand: python -m uvicorn api:app --host 0.0.0.0 --port $PORT
