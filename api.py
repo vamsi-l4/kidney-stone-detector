@@ -3,19 +3,24 @@ import io
 import json
 from pathlib import Path
 
-import torch
-import torch.nn as nn
-from torchvision import models, transforms
-from fastapi import FastAPI, File, UploadFile, HTTPException, Depends
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from fastapi.responses import JSONResponse
-from PIL import Image
+import torch  # type: ignore
+import torch.nn as nn  # type: ignore
+from torchvision.models import mobilenet_v2  # type: ignore
+from torchvision import transforms  # type: ignore
+from fastapi import FastAPI, File, UploadFile, HTTPException, Depends  # type: ignore
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials  # type: ignore
+from fastapi.responses import JSONResponse  # type: ignore
+from PIL import Image  # type: ignore
 
+# Device
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+# Paths
 MODELS_DIR = Path("models")
 MODEL_PATH = MODELS_DIR / "kidney_mobilenet_v2.pt"
 LABELS_PATH = MODELS_DIR / "labels.json"
 
+# API Token
 API_TOKEN = "mysecrettoken"
 
 # Load labels
@@ -27,14 +32,15 @@ idx_to_class = {int(k): v for k, v in idx_to_class.items()}
 
 # Build model
 num_classes = len(idx_to_class)
-model = models.mobilenet_v2(weights=None)  # no pretrained weights here
+model = mobilenet_v2(weights=None)  # no pretrained weights
 in_feats = model.classifier[1].in_features
 model.classifier[1] = nn.Linear(in_feats, num_classes)
-model.load_state_dict(torch.load(MODEL_PATH, map_location=DEVICE)["state_dict"])
+state = torch.load(MODEL_PATH, map_location=DEVICE)
+model.load_state_dict(state["state_dict"])
 model.eval()
 model.to(DEVICE)
 
-# Preprocessing (fixed values)
+# Preprocessing
 preprocess = transforms.Compose([
     transforms.Grayscale(num_output_channels=3),
     transforms.Resize((256, 256)),
@@ -48,6 +54,7 @@ preprocess = transforms.Compose([
 
 # Auth
 auth_scheme = HTTPBearer()
+
 def verify_token(credentials: HTTPAuthorizationCredentials = Depends(auth_scheme)):
     if credentials.credentials != API_TOKEN:
         raise HTTPException(status_code=403, detail="Invalid or missing token")
@@ -55,6 +62,11 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(auth_scheme
 
 # App
 app = FastAPI(title="Kidney Stone Detector API")
+
+@app.get("/healthz")
+def health_check():
+    """Health check endpoint for Render"""
+    return {"status": "ok"}
 
 @app.post("/predict")
 async def predict(file: UploadFile = File(...), authorized: bool = Depends(verify_token)):

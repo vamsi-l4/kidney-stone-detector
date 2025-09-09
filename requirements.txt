@@ -1,8 +1,14 @@
+# Core ML libraries
+torch --index-url https://download.pytorch.org/whl/cpu
+torchvision --index-url https://download.pytorch.org/whl/cpu
+torchaudio --index-url https://download.pytorch.org/whl/cpu
+scikit-learn
+numpy
+pillow
+
+# FastAPI & server
 fastapi
 uvicorn[standard]
-python-multipart
-pillow
-numpy
-scikit-learn
-python-dotenv
 gunicorn
+python-multipart
+python-dotenv
