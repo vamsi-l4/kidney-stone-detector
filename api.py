@@ -1,16 +1,16 @@
-# api.py
 import io
+
 import json
 from pathlib import Path
 
-import torch  # type: ignore
-import torch.nn as nn  # type: ignore
-from torchvision.models import mobilenet_v2  # type: ignore
-from torchvision import transforms  # type: ignore
-from fastapi import FastAPI, File, UploadFile, HTTPException, Depends  # type: ignore
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials  # type: ignore
-from fastapi.responses import JSONResponse  # type: ignore
-from PIL import Image  # type: ignore
+import torch
+import torch.nn as nn
+from torchvision.models import mobilenet_v2
+from torchvision import transforms
+from fastapi import FastAPI, File, UploadFile, HTTPException, Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.responses import JSONResponse
+from PIL import Image
 
 # Device
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -65,7 +65,7 @@ app = FastAPI(title="Kidney Stone Detector API")
 
 @app.get("/healthz")
 def health_check():
-    """Health check endpoint for Render"""
+
     return {"status": "ok"}
 
 @app.post("/predict")
