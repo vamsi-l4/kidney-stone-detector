@@ -7,8 +7,7 @@ services:
       pip install --upgrade pip
       pip install --no-cache-dir --index-url https://download.pytorch.org/whl/cpu torch torchvision torchaudio
       pip install --no-cache-dir -r requirements.txt
-    startCommand: .venv/bin/uvicorn api:app --host 0.0.0.0 --port $PORT
-
+    startCommand: python -m uvicorn api:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: API_TOKEN
         value: "mysecrettoken"
