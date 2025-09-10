@@ -1,9 +1,9 @@
-# Core dependencies (excluding torch, torchvision, torchaudio since we install them via buildCommand)
+torch
+torchvision
+torchaudio
 scikit-learn
 numpy
 pillow
-
-# FastAPI & server
 fastapi
 uvicorn[standard]
 python-multipart
